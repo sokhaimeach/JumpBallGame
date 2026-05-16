@@ -1,0 +1,13 @@
+{
+    "high_score": 500,
+    "coins": 52,
+    "selected_season": "lava",
+    "unlocked_seasons": [
+        "sky",
+        "lava"
+    ],
+    "selected_ball": "red",
+    "unlocked_balls": [
+        "red"
+    ]
+}

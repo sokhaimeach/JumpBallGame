@@ -1,0 +1,23 @@
+{
+    "sky": {
+        "name": "Sky Season",
+        "background": "assets/backgrounds/sky_bg.jpg",
+        "platform": "assets/platforms/sky_platform.png",
+        "enemy": "gravity",
+        "unlock_cost": 0
+    },
+    "lava": {
+        "name": "Lava Season",
+        "background": "assets/backgrounds/lava_bg.jpg",
+        "platform": "assets/platforms/lava_platform.png",
+        "enemy": "boom",
+        "unlock_cost": 50
+    },
+    "winter": {
+        "name": "Winter Season",
+        "background": "assets/backgrounds/winter_bg.jpg",
+        "platform": "assets/platforms/winter_platform.png",
+        "enemy": "moving_platform",
+        "unlock_cost": 100
+    }
+}

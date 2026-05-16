@@ -1,0 +1,35 @@
+# Python files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.env/
+ENV/
+env/
+.python-version
+
+# VS Code
+.vscode/
+
+# Editor temporary files
+*.swp
+*.swo
+*.tmp
+*.bak
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+*.egg
+
+
+# Audio and asset caches
+*.pyc

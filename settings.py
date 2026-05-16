@@ -1,0 +1,19 @@
+# game window dimensions
+SCREEN_WIDTH = 440
+SCREEN_HEIGHT = 800
+
+# define colours
+WHITE = (255, 255, 255)
+BLACK = (20, 20, 20)
+BLUE = (80, 150, 255)
+GREEN = (80, 220, 120)
+RED = (220, 80, 80)
+YELLOW = (240, 200, 60)
+GRAY = (120, 120, 120)
+PANEL = (153, 217, 234)
+
+# game variables
+FPS = 60
+SCROLL_THRESH = 200
+GRAVITY = 1
+MAX_PLATFORMS = 10

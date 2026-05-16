@@ -1,13 +1,17 @@
 {
-    "high_score": 500,
-    "coins": 52,
-    "selected_season": "lava",
+    "high_score": 7427,
+    "coins": 8956,
+    "selected_season": "sky",
     "unlocked_seasons": [
         "sky",
-        "lava"
+        "lava",
+        "winter"
     ],
     "selected_ball": "red",
     "unlocked_balls": [
-        "red"
+        "red",
+        "blue",
+        "gold",
+        "star"
     ]
 }

@@ -11,13 +11,13 @@
         "background": "assets/backgrounds/lava_bg.jpg",
         "platform": "assets/platforms/lava_platform.png",
         "enemy": "boom",
-        "unlock_cost": 50
+        "unlock_cost": 100
     },
     "winter": {
         "name": "Winter Season",
         "background": "assets/backgrounds/winter_bg.jpg",
         "platform": "assets/platforms/winter_platform.png",
         "enemy": "moving_platform",
-        "unlock_cost": 100
+        "unlock_cost": 300
     }
 }

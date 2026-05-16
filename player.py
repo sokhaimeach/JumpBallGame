@@ -65,4 +65,4 @@ class Player():
 
     def draw(self, screen):
         screen.blit(pygame.transform.flip(self.image, self.filp, False), (self.rect.x - 3, self.rect.y - 5))
-        pygame.draw.rect(screen, WHITE, self.rect, 2)
+        # pygame.draw.rect(screen, WHITE, self.rect, 2)

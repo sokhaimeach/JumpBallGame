@@ -44,7 +44,7 @@ def load_balls():
     return load_json(BALLS_FILE)
 
     
-def unlock_season(save_data, key, seasons):
+def unlock_season(save_data, key, seasons, sound):
     cost = seasons[key]["unlock_cost"]
 
     if key in save_data["unlocked_seasons"]:
@@ -57,12 +57,13 @@ def unlock_season(save_data, key, seasons):
         save_data["unlocked_seasons"].append(key)
         save_data["selected_season"] = key
         save_game_data(save_data)
+        sound.play()
         return True
 
     return False
 
 
-def unlock_ball(save_data, key, balls):
+def unlock_ball(save_data, key, balls, sound):
     cost = balls[key]["unlock_cost"]
 
     if key in save_data["unlocked_balls"]:
@@ -75,6 +76,7 @@ def unlock_ball(save_data, key, balls):
         save_data["unlocked_balls"].append(key)
         save_data["selected_ball"] = key
         save_game_data(save_data)
+        sound.play()
         return True
 
     return False

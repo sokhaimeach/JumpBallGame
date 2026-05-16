@@ -7,16 +7,16 @@
     "blue": {
         "name": "Blue Ball",
         "image": "assets/characters/blueball.png",
-        "unlock_cost": 30
+        "unlock_cost": 50
     },
     "gold": {
         "name": "Gold Ball",
         "image": "assets/characters/yellowball.png",
-        "unlock_cost": 80
+        "unlock_cost": 100
     },
     "star": {
         "name": "Star Ball",
         "image": "assets/characters/star.png",
-        "unlock_cost": 120
+        "unlock_cost": 200
     }
 }

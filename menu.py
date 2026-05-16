@@ -2,7 +2,7 @@
 import pygame
 from settings import BLUE, WHITE, RED, YELLOW, GREEN, GRAY, SCREEN_WIDTH, SCREEN_HEIGHT
 from button import Button
-from game_functions import draw_text, draw_total_coins, back_button, draw_bg, create_platform_with_item, draw_panel
+from game_functions import draw_text, draw_total_coins, draw_bg, create_platform_with_item, draw_game_over
 from season import Season
 from spritesheet import SpriteSheet
 from platforms import Platform
@@ -33,6 +33,7 @@ class Menu:
         self.fade_counter = 0
         self.block_click = False
         self.collect_coin = 0
+        self.high_score_played = False
         self.total_coins = self.game_data["coins"]
         self.high_score = self.game_data["high_score"]
         self.selected_season = self.seasons[self.game_data["selected_season"]]
@@ -50,7 +51,6 @@ class Menu:
         self.boom_sheet = SpriteSheet(self.boom_sheet_img)
         self.explosion_sheet_img = pygame.image.load('assets/boom/explosion.png').convert_alpha()
         self.explosion_sheet = SpriteSheet(self.explosion_sheet_img)
-        self.back_btn_img = pygame.image.load("assets/backgrounds/back_btn.png").convert_alpha()
         self.coin_img = pygame.image.load("assets/coins/coin.png").convert_alpha()
 
         # load sound
@@ -59,6 +59,7 @@ class Menu:
         self.boom_sound = pygame.mixer.Sound("assets/audios/boom.mp3")
         self.game_over_sound = pygame.mixer.Sound("assets/audios/game_over.wav")
         self.reach_high_score_sound = pygame.mixer.Sound("assets/audios/reach_high_score.wav")
+        self.unlock_sound = pygame.mixer.Sound("assets/audios/unlock.wav")
 
         self.state = "start"
         self.season_group = pygame.sprite.Group()
@@ -66,9 +67,9 @@ class Menu:
         for key in self.seasons:
             self.season_group.add(
                 Season(
-                    20,
+                    38,
                     220 * i - 100, 
-                    200,
+                    180,
                     key,
                     pygame.image.load(self.seasons[key]["background"]).convert_alpha(), 
                     self.seasons[key]["name"], 
@@ -84,8 +85,8 @@ class Menu:
         for key in self.balls:
             self.ball_group.add(
                 Ball(
-                    20,
-                    160 * i - 80,
+                    80,
+                    160 * i - 50,
                     90,
                     key,
                     pygame.image.load(self.balls[key]["image"]).convert_alpha(),
@@ -134,9 +135,9 @@ class Menu:
         for key in self.seasons:
             self.season_group.add(
                 Season(
-                    20,
+                    38,
                     220 * i - 100,
-                    200,
+                    180,
                     key,
                     pygame.image.load(self.seasons[key]["background"]).convert_alpha(),
                     self.seasons[key]["name"],
@@ -152,8 +153,8 @@ class Menu:
         for key in self.balls:
             self.ball_group.add(
                 Ball(
-                    20,
-                    160 * i - 80,
+                    80,
+                    160 * i - 50,
                     90,
                     key,
                     pygame.image.load(self.balls[key]["image"]).convert_alpha(),
@@ -167,10 +168,20 @@ class Menu:
             i += 1
 
     def game_panel(self):
-        draw_total_coins(self.screen, self.coin_img, self.total_coins, self.font)
-        is_back = back_button(self.screen, self.back_btn_img)
+        # Draw a stylish header background
+        header_surface = pygame.Surface((SCREEN_WIDTH, 65), pygame.SRCALPHA)
+        pygame.draw.rect(header_surface, (20, 20, 35, 220), (0, 0, SCREEN_WIDTH, 65))
+        self.screen.blit(header_surface, (0, 0))
+        
+        # Draw header bottom border line
+        pygame.draw.line(self.screen, (100, 100, 150), (0, 65), (SCREEN_WIDTH, 65), 3)
 
-        if is_back:
+        draw_total_coins(self.screen, self.coin_img, self.total_coins, self.font)
+        
+        back_btn = Button(15, 12, 90, 40, "Back", self.font_small, RED)
+        back_btn.draw(self.screen)
+
+        if back_btn.clicked():
             self.state = "start"
 
     def start_screen(self):
@@ -178,7 +189,7 @@ class Menu:
         # draw game panel
         self.game_panel()
 
-        draw_text(self.screen, "Walcome", self.font_big, WHITE, SCREEN_WIDTH // 2 - 85, 120)
+        draw_text(self.screen, "JUMP BALL", self.font_big, WHITE, SCREEN_WIDTH // 2 - 110, 120)
 
         play_btn = Button(SCREEN_WIDTH // 2 - 110, 250, 220, 55, "PLAY", self.font, GREEN)
         season_btn = Button(SCREEN_WIDTH // 2 - 110, 320, 220, 55, "SEASONS", self.font, BLUE)
@@ -215,7 +226,7 @@ class Menu:
         for season in self.season_group:
             season.draw(self.screen, self.font)
 
-            if season.select(self.game_data, self.seasons):
+            if season.select(self.game_data, self.seasons, self.unlock_sound):
                 need_refresh = True
 
         if need_refresh:
@@ -231,7 +242,7 @@ class Menu:
         for ball in self.ball_group:
             ball.draw(self.screen, self.font_small)
 
-            if ball.select(self.game_data, self.balls):
+            if ball.select(self.game_data, self.balls, self.unlock_sound):
                 need_refresh = True
 
         if need_refresh:
@@ -253,6 +264,7 @@ class Menu:
         self.scroll = 0
         self.fade_counter = 0
         self.collect_coin = 0
+        self.high_score_played = False
         # reposition jumpy
         self.jumpy.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT - 150)
         # reset platforms and coins
@@ -265,6 +277,7 @@ class Menu:
         self.game_data = load_save_data()
 
         self.total_coins = self.game_data["coins"]
+        self.high_score = self.game_data["high_score"]
 
     def play(self):
         if not self.game_over:     
@@ -323,10 +336,12 @@ class Menu:
                 self.score += self.scroll
 
             # draw line at previous high score
-            pygame.draw.line(self.screen, WHITE, (0, self.score - self.high_score + SCROLL_THRESH), (SCREEN_WIDTH, self.score - self.high_score + SCROLL_THRESH), 3)
-            draw_text(self.screen, "HIGH SCORE", self.font_small, WHITE, SCREEN_WIDTH - 130, self.score - self.high_score + SCROLL_THRESH)
-            if self.scroll == self.high_score:
-                self.reach_high_score_sound.play()
+            if self.high_score > 0:
+                pygame.draw.line(self.screen, WHITE, (0, self.score - self.high_score + SCROLL_THRESH), (SCREEN_WIDTH, self.score - self.high_score + SCROLL_THRESH), 3)
+                draw_text(self.screen, "HIGH SCORE", self.font_small, WHITE, SCREEN_WIDTH - 130, self.score - self.high_score + SCROLL_THRESH)
+                if self.score >= self.high_score and not self.high_score_played:
+                    self.reach_high_score_sound.play()
+                    self.high_score_played = True
 
             # draw sprites
             self.platform_group.draw(self.screen)
@@ -335,7 +350,17 @@ class Menu:
             self.jumpy.draw(self.screen)
 
             # draw panel
-            draw_panel(self.screen, self.score, self.collect_coin, self.font_small)
+            draw_total_coins(self.screen, self.coin_img, self.collect_coin, self.font_small)
+            
+            back_btn = Button(15, 12, 90, 40, "Back", self.font_small, RED)
+            back_btn.draw(self.screen)
+
+            if back_btn.clicked():
+                self.state = "start"
+                self.reset()
+                return
+
+            draw_text(self.screen, "High: " + str(self.score) + "m", self.font_small, WHITE, SCREEN_WIDTH // 2 - 60, 20)
 
             # check game over
             if self.jumpy.rect.top > SCREEN_HEIGHT:
@@ -351,58 +376,9 @@ class Menu:
                     pygame.draw.rect(self.screen, BLACK, (0, y * 100, self.fade_counter, 100))
                     pygame.draw.rect(self.screen, BLACK, (SCREEN_WIDTH - self.fade_counter, (y + 1) * 100, SCREEN_WIDTH, 100))
             else:
-                # OVERLAY
-                overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
-                overlay.set_alpha(180)
-                overlay.fill((0, 0, 0))
-                self.screen.blit(overlay, (0, 0))
-
-                # PANEL
-                panel_w = 400
-                panel_h = 320
-                panel_x = (SCREEN_WIDTH - panel_w) // 2
-                panel_y = 120
-
-                pygame.draw.rect(
-                    self.screen,
-                    (25, 25, 40),
-                    (panel_x, panel_y, panel_w, panel_h),
-                    border_radius=25
-                )
-
-                pygame.draw.rect(
-                    self.screen,
-                    WHITE,
-                    (panel_x, panel_y, panel_w, panel_h),
-                    4,
-                    border_radius=25
-                )
-
-                # TITLE
-                draw_text(
-                    self.screen,
-                    "GAME OVER",
-                    self.font_big,
-                    (255, 70, 70),
-                    panel_x + 75,
-                    panel_y + 35
-                )
-
-                # ================= SCORE =================
-                draw_text(
-                    self.screen,
-                    f"Coins : {self.collect_coin}",
-                    self.font_big,
-                    WHITE,
-                    panel_x + 100,
-                    panel_y + 110
-                )
-
-                play_btn = Button(panel_x + 50 , panel_y + 190, 300, 50, "Play Again", self.font_small, BLUE)
-                home_btn = Button(panel_x + 50 , panel_y + 255, 300, 50, "Back Home", self.font_small, RED)
-
-                play_btn.draw(self.screen)
-                home_btn.draw(self.screen)
+                
+                # draw game over
+                play_btn, home_btn = draw_game_over(self.screen, self.font_big, self.font_small, self.collect_coin)
 
                 if play_btn.clicked():
                     self.reset()

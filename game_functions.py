@@ -1,5 +1,7 @@
 import pygame
 import random
+import sys
+import os
 from settings import SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, PANEL, YELLOW, BLUE, RED
 from platforms import Platform
 from coin import Coin
@@ -158,3 +160,21 @@ def create_platform_with_item(
         boom_group.add(boom)
 
     return new_platform
+
+
+# function for locate file path
+def resource_path(relative_path):
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+# function for locate save file path
+def save_path(filename):
+    # for save data
+    folder = os.path.join(os.getenv("APPDATA"), "JumpBallGame")
+    os.makedirs(folder, exist_ok=True)
+    return os.path.join(folder, filename)

@@ -1,9 +1,10 @@
 import json
 import os
+from game_functions import resource_path, save_path
 
-SAVE_FILE = "data/save_data.json"
-SEASON_FILE = "data/seasons.json"
-BALLS_FILE = "data/balls.json"
+SAVE_FILE = save_path("save_data.json")
+SEASON_FILE = resource_path("data/seasons.json")
+BALLS_FILE = resource_path("data/balls.json")
 
 # function for read json file and return as data
 def load_json(filename):

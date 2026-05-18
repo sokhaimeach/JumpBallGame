@@ -2,7 +2,7 @@
 import pygame
 from settings import BLUE, WHITE, RED, YELLOW, GREEN, GRAY, SCREEN_WIDTH, SCREEN_HEIGHT
 from button import Button
-from game_functions import draw_text, draw_total_coins, draw_bg, create_platform_with_item, draw_game_over
+from game_functions import draw_text, draw_total_coins, draw_bg, create_platform_with_item, draw_game_over, resource_path
 from season import Season
 from spritesheet import SpriteSheet
 from platforms import Platform
@@ -40,27 +40,27 @@ class Menu:
         self.selected_ball = self.balls[self.game_data["selected_ball"]]
 
         # load images
-        jump_ball_image = pygame.image.load(self.selected_ball["image"])
-        self.bg_image = pygame.image.load(self.selected_season["background"]).convert_alpha()
-        self.platform_image = pygame.image.load(self.selected_season["platform"]).convert_alpha()
+        jump_ball_image = pygame.image.load(resource_path(self.selected_ball["image"]))
+        self.bg_image = pygame.image.load(resource_path(self.selected_season["background"])).convert_alpha()
+        self.platform_image = pygame.image.load(resource_path(self.selected_season["platform"])).convert_alpha()
         # coin image
-        self.coin_sheet_img = pygame.image.load('assets/coins/coins.png').convert_alpha()
+        self.coin_sheet_img = pygame.image.load(resource_path('assets/coins/coins.png')).convert_alpha()
         self.coin_sheet = SpriteSheet(self.coin_sheet_img)
         # boom images
-        self.boom_sheet_img = pygame.image.load('assets/boom/booms.png').convert_alpha()
+        self.boom_sheet_img = pygame.image.load(resource_path('assets/boom/booms.png')).convert_alpha()
         self.boom_sheet = SpriteSheet(self.boom_sheet_img)
-        self.explosion_sheet_img = pygame.image.load('assets/boom/explosion.png').convert_alpha()
+        self.explosion_sheet_img = pygame.image.load(resource_path('assets/boom/explosion.png')).convert_alpha()
         self.explosion_sheet = SpriteSheet(self.explosion_sheet_img)
-        self.coin_img = pygame.image.load("assets/coins/coin.png").convert_alpha()
+        self.coin_img = pygame.image.load(resource_path("assets/coins/coin.png")).convert_alpha()
 
         # load sound
-        self.coin_sound = pygame.mixer.Sound("assets/audios/coin.mp3")
-        self.jump_sound = pygame.mixer.Sound("assets/audios/jump_sound.mp3")
-        self.boom_sound = pygame.mixer.Sound("assets/audios/boom.mp3")
-        self.game_over_sound = pygame.mixer.Sound("assets/audios/game_over.wav")
-        self.reach_high_score_sound = pygame.mixer.Sound("assets/audios/reach_high_score.wav")
-        self.unlock_sound = pygame.mixer.Sound("assets/audios/unlock.wav")
-        self.intro_sound = pygame.mixer.Sound("assets/audios/intro_game.mp3")
+        self.coin_sound = pygame.mixer.Sound(resource_path("assets/audios/coin.mp3"))
+        self.jump_sound = pygame.mixer.Sound(resource_path("assets/audios/jump_sound.mp3"))
+        self.boom_sound = pygame.mixer.Sound(resource_path("assets/audios/boom.mp3"))
+        self.game_over_sound = pygame.mixer.Sound(resource_path("assets/audios/game_over.wav"))
+        self.reach_high_score_sound = pygame.mixer.Sound(resource_path("assets/audios/reach_high_score.wav"))
+        self.unlock_sound = pygame.mixer.Sound(resource_path("assets/audios/unlock.wav"))
+        self.intro_sound = pygame.mixer.Sound(resource_path("assets/audios/intro_game.mp3"))
 
         self.state = "start"
         self.season_group = pygame.sprite.Group()
@@ -72,7 +72,7 @@ class Menu:
                     220 * i - 100, 
                     180,
                     key,
-                    pygame.image.load(self.seasons[key]["background"]).convert_alpha(), 
+                    pygame.image.load(resource_path(self.seasons[key]["background"])).convert_alpha(), 
                     self.seasons[key]["name"], 
                     self.seasons[key]["unlock_cost"],
                     True if key in self.game_data["unlocked_seasons"] else False,
@@ -90,7 +90,7 @@ class Menu:
                     160 * i - 50,
                     90,
                     key,
-                    pygame.image.load(self.balls[key]["image"]).convert_alpha(),
+                    pygame.image.load(resource_path(self.balls[key]["image"])).convert_alpha(),
                     self.balls[key]["name"],
                     self.balls[key]["unlock_cost"],
                     key in self.game_data["unlocked_balls"],
@@ -122,9 +122,9 @@ class Menu:
         self.selected_season = self.seasons[self.game_data["selected_season"]]
         self.selected_ball = self.balls[self.game_data["selected_ball"]]
 
-        jump_ball_image = pygame.image.load(self.selected_ball["image"])
-        self.bg_image = pygame.image.load(self.selected_season["background"]).convert_alpha()
-        self.platform_image = pygame.image.load(self.selected_season["platform"]).convert_alpha()
+        jump_ball_image = pygame.image.load(resource_path(self.selected_ball["image"]))
+        self.bg_image = pygame.image.load(resource_path(self.selected_season["background"])).convert_alpha()
+        self.platform_image = pygame.image.load(resource_path(self.selected_season["platform"])).convert_alpha()
         
         self.jumpy = Player(SCREEN_WIDTH // 2, SCREEN_HEIGHT - 150, jump_ball_image, self.jump_sound)
 
@@ -140,7 +140,7 @@ class Menu:
                     220 * i - 100,
                     180,
                     key,
-                    pygame.image.load(self.seasons[key]["background"]).convert_alpha(),
+                    pygame.image.load(resource_path(self.seasons[key]["background"])).convert_alpha(),
                     self.seasons[key]["name"],
                     self.seasons[key]["unlock_cost"],
                     key in self.game_data["unlocked_seasons"],
@@ -158,7 +158,7 @@ class Menu:
                     160 * i - 50,
                     90,
                     key,
-                    pygame.image.load(self.balls[key]["image"]).convert_alpha(),
+                    pygame.image.load(resource_path(self.balls[key]["image"])).convert_alpha(),
                     self.balls[key]["name"],
                     self.balls[key]["unlock_cost"],
                     key in self.game_data["unlocked_balls"],

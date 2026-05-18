@@ -1,17 +1,12 @@
 {
-    "high_score": 7427,
-    "coins": 8956,
+    "high_score": 0,
+    "coins": 0,
     "selected_season": "sky",
     "unlocked_seasons": [
-        "sky",
-        "lava",
-        "winter"
+        "sky"
     ],
     "selected_ball": "red",
     "unlocked_balls": [
-        "red",
-        "blue",
-        "gold",
-        "star"
+        "red"
     ]
 }

@@ -60,6 +60,7 @@ class Menu:
         self.game_over_sound = pygame.mixer.Sound("assets/audios/game_over.wav")
         self.reach_high_score_sound = pygame.mixer.Sound("assets/audios/reach_high_score.wav")
         self.unlock_sound = pygame.mixer.Sound("assets/audios/unlock.wav")
+        self.intro_sound = pygame.mixer.Sound("assets/audios/intro_game.mp3")
 
         self.state = "start"
         self.season_group = pygame.sprite.Group()
@@ -166,6 +167,13 @@ class Menu:
                 )
             )
             i += 1
+
+        # reset platforms
+        self.platform_group.empty()
+
+        # create starting platform
+        self.platform = Platform(SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT - 50, 100, False, self.platform_image)
+        self.platform_group.add(self.platform)
 
     def game_panel(self):
         # Draw a stylish header background
@@ -317,6 +325,7 @@ class Menu:
                 # check if player hit boom
                 for boom in self.boom_group:
                     if self.jumpy.rect.colliderect(boom.rect) and boom.exploding == False:
+                        self.boom_sound.set_volume(2)
                         self.boom_sound.play()
                         boom.explode(self.explosion_sheet)
                         self.scroll = 0
@@ -391,11 +400,17 @@ class Menu:
 
 
     def run(self):
+        if self.state != "play" or self.state != "quit":
+            if not pygame.mixer.get_busy():
+                self.intro_sound.set_volume(0.5)
+                self.intro_sound.play()
+
         if self.state == "start":
             self.start_screen()
             return
         
         if self.state == "play":
+            self.intro_sound.stop()
             self.play()
             return
 

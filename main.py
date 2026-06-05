@@ -1,12 +1,14 @@
 import pygame
-from settings import *
-from data_manager import *
-from menu import Menu
+from screens.menu import Menu
+from settings import FPS, SCREEN_HEIGHT, SCREEN_WIDTH
 
 # initialise pygame
 pygame.init()
 # initialise sound
-pygame.mixer.init()
+try:
+    pygame.mixer.init()
+except pygame.error as error:
+    print(f"Could not initialize sound: {error}")
 
 # create game window
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -24,16 +26,17 @@ while run:
 
     clock.tick(FPS)
 
+    # event handler
+    for event in pygame.event.get():
+        menu.handle_event(event)
+
+        if event.type == pygame.QUIT:
+            run = False
+
     menu.run()
 
     if menu.quit:
         run = False
-
-    # event handler
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-                
-            run = False
 
     # update display window
     pygame.display.update()

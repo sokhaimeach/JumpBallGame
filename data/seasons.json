@@ -3,21 +3,70 @@
         "name": "Sky Season",
         "background": "assets/backgrounds/sky_bg.jpg",
         "platform": "assets/platforms/sky_platform.png",
-        "enemy": "gravity",
+        "enemy": ["gravity"],
         "unlock_cost": 0
+    },
+    "forest": {
+        "name": "Forest Season",
+        "background": "assets/backgrounds/forest_bg.jpg",
+        "platform": "assets/platforms/forest_platform.png",
+        "enemy": ["gravity"],
+        "unlock_cost": 100
+    },
+    "jungle": {
+        "name": "Jungle Season",
+        "background": "assets/backgrounds/jungle_bg.jpg",
+        "platform": "assets/platforms/jungle_platform.png",
+        "enemy": ["gravity"],
+        "unlock_cost": 200
     },
     "lava": {
         "name": "Lava Season",
         "background": "assets/backgrounds/lava_bg.jpg",
         "platform": "assets/platforms/lava_platform.png",
-        "enemy": "boom",
-        "unlock_cost": 100
+        "enemy": ["boom"],
+        "unlock_cost": 500
     },
     "winter": {
         "name": "Winter Season",
         "background": "assets/backgrounds/winter_bg.jpg",
         "platform": "assets/platforms/winter_platform.png",
-        "enemy": "moving_platform",
-        "unlock_cost": 300
+        "enemy": ["moving_platform"],
+        "unlock_cost": 700
+    },
+    "ocean": {
+        "name": "Ocean Season",
+        "background": "assets/backgrounds/ocean_bg.jpg",
+        "platform": "assets/platforms/ocean_platform.png",
+        "enemy": ["moving_platform"],
+        "unlock_cost": 1000
+    },
+    "desert": {
+        "name": "Desert Season",
+        "background": "assets/backgrounds/desert_bg.jpg",
+        "platform": "assets/platforms/desert_platform.png",
+        "enemy": ["moving_platform", "boom"],
+        "unlock_cost": 1500
+    },
+    "space": {
+        "name": "Space Season",
+        "background": "assets/backgrounds/space_bg.jpg",
+        "platform": "assets/platforms/space_platform.png",
+        "enemy": ["meteor", "moving_platform"],
+        "unlock_cost": 2500
+    },
+    "cyber": {
+        "name": "Cyber Season",
+        "background": "assets/backgrounds/cyber_bg.jpg",
+        "platform": "assets/platforms/cyber_platform.png",
+        "enemy": ["laser", "boom"],
+        "unlock_cost": 3500
+    },
+    "dragon": {
+        "name": "Dragon Season",
+        "background": "assets/backgrounds/dragon_bg.jpg",
+        "platform": "assets/platforms/lava_platform.png",
+        "enemy": ["fireball", "moving_platform"],
+        "unlock_cost": 5000
     }
 }
